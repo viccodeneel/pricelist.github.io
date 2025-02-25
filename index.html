@@ -10,40 +10,9 @@
   <style>
     .attribution { font-size: 11px; text-align: center; }
     .attribution a { color: hsl(228, 45%, 44%); }
-    .toggle-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-  
-    .toggle-switch {
-      width: 50px;
-      height: 25px;
-      background: #ccc;
-      border-radius: 25px;
-      position: relative;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .toggle-switch::before {
-      content: '';
-      width: 20px;
-      height: 20px;
-      background: white;
-      border-radius: 50%;
-      position: absolute;
-      top: 50%;
-      left: 3px;
-      transform: translateY(-50%);
-      transition: left 0.3s;
-    }
-    .toggle-active {
-      background: #007BFF;
-    }
-    .toggle-active::before {
-      left: 27px;
-    }
+.toggle-btn {
+            transition: transform 0.3s ease-in-out;
+        }
   </style>
 
    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
@@ -53,11 +22,19 @@
     <br><br>
   <h2 class="text-center text-4xl">Our Pricing</h2>
      <br><br>
+
  <div class="toggle-container">
+   <div class="flex items-center space-x-4">
     <h2 class="text-1xl">Annually</h2>
-    <div id="togglePricing" class="toggle-switch"></div>
+    <div class="w-16 h-7 bg-gray-300 rounded-full p-1 flex items-center cursor-pointer relative" onclick="toggle()">
+  <button id="toggleBtn"
+    class="w-5 h-5 bg-white rounded-full shadow-md toggle-btn">
+    <span class="absolute top-1/2 left-1 w-4 h-4 bg-white rounded-full transform -translate-y-1/2 transition duration-300"></span>
+  </button>
+
+</div>
     <h2 class="text-1xl">Monthly</h2>
-  </div>
+  </div></div>
 
 <div class="flex flex-col md:flex-row items-center justify-center w-full max-w-6xl px-4">
   <div class="bg-white p-6 rounded-sm shadow-lg border border-gray-200 text-center h-80 mt-7 transition-transform duration-300 hover:scale-105 hover:bg-blue-500 hover:text-white">
@@ -83,7 +60,7 @@
 <div class="bg-white p-6 rounded-sm shadow-lg border border-gray-200 text-center h-80 mt-7 transition-transform duration-300 hover:scale-105 hover:bg-blue-500 hover:text-white">
   <h2 class="text-center text-xl p-1">Master</h2>
   <h2 class="text-5xl p-3 font-mono price" data-price="399.99" data-alt-price="39.99" style="font-family:impact;">&dollar;399.99</h2>
-  <h2 class="text-center text-xs p-3">2 TB Storage</h2>
+  <h2 class="text-center text-xs p-3 ">2 TB Storage</h2>
   <h2 class="text-center text-xs p-3">10 Users Allowed</h2>
   <h2 class="text-center text-xs p-3">Send up to 20 GB</h2>
   <h2 class="text-center text-xs p-3 border border-gray-20 rounded-sm hover:scale-105 transition-transform duration-300">Learn More</h2>
@@ -96,24 +73,29 @@
   </div>
 
 <script>
-    document.getElementById("togglePricing").addEventListener("click", function() {
-      let toggle = this;
-      toggle.classList.toggle("toggle-active");
-      
-      document.querySelectorAll(".price").forEach(price => {
-        let basePrice = parseFloat(price.getAttribute("data-price"));
-        let altPrice = parseFloat(price.getAttribute("data-alt-price"));
-        let currentPrice = parseFloat(price.textContent.replace("$", ""));
-        let newPrice = currentPrice === basePrice ? altPrice : basePrice;
-        price.style.transition = "transform 0.3s ease-in-out";
-        price.style.transform = "scale(1.2)";
-        setTimeout(() => {
-          price.textContent = `$${newPrice.toFixed(2)}`;
-          price.style.transform = "scale(1)";
-        }, 300);
-      });
+  document.getElementById("toggleBtn").addEventListener("click", function () {
+    this.classList.toggle("active");
+    document.querySelectorAll(".price").forEach(price => {
+      let basePrice = parseFloat(price.getAttribute("data-price"));
+      let altPrice = parseFloat(price.getAttribute("data-alt-price"));
+      let currentPrice = parseFloat(price.textContent.replace("$", ""));
+      let newPrice = currentPrice === basePrice ? altPrice : basePrice;
+      price.style.transition = "transform 0.3s ease-in-out";
+      price.style.transform = "scale(1.2)";
+      setTimeout(() => {
+        price.textContent = `$${newPrice.toFixed(2)}`;
+        price.style.transform = "scale(1)";
+      }, 300);
     });
-  </script>
+  });
+</script>
+<script>
+        let isOn = false;
+        function toggle() {
+            isOn = !isOn;
+            document.getElementById("toggleBtn").style.transform = isOn ? "translateX(180%)" : "translateX(0)";
+        }
+    </script>
 
 </body>
 </html>
